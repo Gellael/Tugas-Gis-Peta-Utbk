@@ -1,9 +1,8 @@
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-
-// FIX ICON VITE (Agar ikon pin biru muncul)
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
 let DefaultIcon = L.icon({
     iconUrl: markerIcon,
     shadowUrl: markerShadow,
@@ -12,39 +11,29 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// DATA KOORDINAT KAMPUS UNIB
 const unib = {
-    gerbang: [-3.752355, 102.270515],
-    rektorat: [-3.755380, 102.271370],
-    auditorium: [-3.754800, 102.271500],
-    lptik: [-3.756810, 102.271920],   
-    perpus: [-3.758110, 102.271750],  
-    gkb: [-3.759000, 102.272500],
-    fkip: [-3.759550, 102.273210],    
-    ft: [-3.761220, 102.274450],      
-    mipa: [-3.754980, 102.274150],    
-    fk: [-3.753500, 102.272000],
-    feb: [-3.757220, 102.275880],
-    fh: [-3.756500, 102.275000],
-    fisip: [-3.758500, 102.276000],
-    fp: [-3.760500, 102.275500]
-};
-
-const simulasi = {
-    pantai: [-3.827361, 102.261944]
+    lptik: [-3.758372916495219, 102.27494967197975],        
+    fkik: [-3.754979862955153, 102.27795980347213],         
+    feb_s: [-3.761868617946405, 102.26894259002916],        
+    fisipol: [-3.759177453212331, 102.27455299895848],      
+    lab_bahasa: [-3.7583322348586847, 102.27570889626327],  
+    lab_si: [-3.758429547087232, 102.27738935799476],       
+    perpus: [-3.756854385257199, 102.27481448506444],       
+    lab_hukum: [-3.7604411985889215, 102.26866685243749],   
+    gerbang_depan: [-3.7600026923330034, 102.26706348042904]
 };
 
 let map, routeLine, markerStart, markerEnd;
 
 document.addEventListener('DOMContentLoaded', () => {
-    map = L.map('map', { zoomControl: false }).setView(unib.rektorat, 16);
+    map = L.map('map', { zoomControl: false }).setView(unib.lptik, 16);
+    
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '© OpenStreetMap'
     }).addTo(map);
     L.control.zoom({ position: 'topright' }).addTo(map);
 
     document.getElementById('btn-start').addEventListener('click', () => {
-        const startPilih = document.getElementById('start').value;
         const destPilih = document.getElementById('dest').value;
         const modePilih = document.getElementById('mode').value; 
         const target = unib[destPilih];
@@ -57,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             map.invalidateSize(); 
-            mulaiNavigasi(startPilih, target, modePilih); 
+            mulaiNavigasi(target, modePilih); 
         }, 600);
     });
 
@@ -65,24 +54,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('panel-toggle').addEventListener('click', () => document.getElementById('route-panel').classList.toggle('collapsed'));
 });
 
-function mulaiNavigasi(startKode, dest, mode) {
-    if (startKode === 'user') {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (p) => drawRouteManual([p.coords.latitude, p.coords.longitude], dest, mode),
-                (err) => {
-                    alert("GPS gagal terbaca. Dialihkan ke Gerbang UNIB.");
-                    drawRouteManual(unib.gerbang, dest, mode);
-                },
-                { enableHighAccuracy: true, timeout: 5000 }
-            );
-        } else {
-            drawRouteManual(unib.gerbang, dest, mode);
-        }
-    } else if (startKode === 'pantai') {
-        drawRouteManual(simulasi.pantai, dest, mode);
+function mulaiNavigasi(dest, mode) {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (p) => drawRouteManual([p.coords.latitude, p.coords.longitude], dest, mode),
+            (err) => {
+                alert("GPS kamu nggak terbaca nih. Kita arahkan dari Gerbang Depan UNIB dulu ya.");
+                drawRouteManual(unib.gerbang_depan, dest, mode);
+            },
+            { enableHighAccuracy: true, timeout: 5000 }
+        );
     } else {
-        drawRouteManual(unib.gerbang, dest, mode);
+        alert("Browser kamu nggak support GPS.");
+        drawRouteManual(unib.gerbang_depan, dest, mode);
     }
 }
 
@@ -92,12 +76,12 @@ async function drawRouteManual(start, end, mode) {
     if (markerEnd) map.removeLayer(markerEnd);
 
     document.getElementById('route-panel').style.display = 'flex';
-    document.getElementById('panel-title').innerText = "Mencari Rute...";
-    document.getElementById('panel-meta').innerText = "Mengkalkulasi waktu tempuh...";
+    document.getElementById('panel-title').innerText = "Tunggu ya...";
+    document.getElementById('panel-meta').innerText = "Lagi ngitung rute dan waktu tempuhnya...";
     document.getElementById('instruction-list').innerHTML = '';
 
-    markerStart = L.marker(start).addTo(map).bindPopup("Titik Awal").openPopup();
-    markerEnd = L.marker(end).addTo(map).bindPopup("Tujuan Ujian");
+    markerStart = L.marker(start).addTo(map).bindPopup("Posisi Kamu").openPopup();
+    markerEnd = L.marker(end).addTo(map).bindPopup("Lokasi Ujian");
     map.fitBounds(L.latLngBounds(start, end), { padding: [60, 60] });
 
     try {
@@ -105,10 +89,10 @@ async function drawRouteManual(start, end, mode) {
         const url = `https://router.project-osrm.org/route/v1/${profileOSRM}/${start[1]},${start[0]};${end[1]},${end[0]}?overview=full&geometries=geojson&steps=true`;
         
         const response = await fetch(url);
-        if (!response.ok) throw new Error("Gagal terhubung ke server peta.");
+        if (!response.ok) throw new Error("Koneksi gagal.");
         
         const data = await response.json();
-        if (data.code !== 'Ok') throw new Error("Jalur tidak ditemukan di area ini.");
+        if (data.code !== 'Ok') throw new Error("Rute tidak ketemu.");
 
         const ruteInfo = data.routes[0];
         const koordinatJalan = ruteInfo.geometry.coordinates.map(c => [c[1], c[0]]);
@@ -119,23 +103,17 @@ async function drawRouteManual(start, end, mode) {
         routeLine = L.polyline(koordinatJalan, { color: warnaGaris, weight: 6, opacity: 0.8 }).addTo(map);
         map.fitBounds(routeLine.getBounds(), { padding: [50, 50] });
 
-        // =========================================================
-        // 🚀 RUMUS ESTIMASI WAKTU FISIKA NYATA (Jarak / Kecepatan)
-        // =========================================================
-        const jarakMeter = ruteInfo.distance; // Ambil jarak asli dalam satuan meter
-        let durasiRealistis = 0; // Dalam satuan detik
+        const jarakMeter = ruteInfo.distance;
+        let durasiRealistis = 0;
         let labelMode = "";
 
         if (mode === 'mobil') {
-            // Asumsi kecepatan rata-rata mobil di perkotaan: 30 km/jam (~8.3 meter/detik)
-            durasiRealistis = (jarakMeter / 8.3) + 120; // +120 detik (2 menit) untuk cari parkir
-            labelMode = "Naik Mobil";
+            durasiRealistis = (jarakMeter / 8.3) + 120; 
+            labelMode = "Mobil";
         } else if (mode === 'motor') {
-            // Asumsi kecepatan motor (bisa nyelip): 40 km/jam (~11.1 meter/detik)
-            durasiRealistis = (jarakMeter / 11.1) + 60; // +60 detik (1 menit) untuk parkir
-            labelMode = "Naik Motor";
+            durasiRealistis = (jarakMeter / 11.1) + 60; 
+            labelMode = "Motor";
         } else {
-            // Asumsi kecepatan jalan kaki manusia normal: 4.5 km/jam (~1.25 meter/detik)
             durasiRealistis = (jarakMeter / 1.25);
             labelMode = "Jalan Kaki";
         }
@@ -143,10 +121,9 @@ async function drawRouteManual(start, end, mode) {
         const jarakKm = (jarakMeter / 1000).toFixed(1);
         const waktuMenit = Math.max(1, Math.round(durasiRealistis / 60));
         
-        document.getElementById('panel-title').innerText = "Rute Ditemukan";
-        document.getElementById('panel-meta').innerText = `Jarak: ${jarakKm} km | Estimasi: ${waktuMenit} menit (${labelMode})`;
+        document.getElementById('panel-title').innerText = "Ketemu nih!";
+        document.getElementById('panel-meta').innerText = `Jarak: ${jarakKm} km | Waktu: ${waktuMenit} menit (${labelMode})`;
 
-        // --- GENERATE INSTRUKSI BELOKAN ---
         const list = document.getElementById('instruction-list');
         list.innerHTML = '';
 
@@ -155,14 +132,14 @@ async function drawRouteManual(start, end, mode) {
             const type = step.maneuver.type || '';
             
             let iconClass = 'ri-arrow-up-line';
-            let arah = 'Terus lurus';
+            let arah = 'Jalan lurus terus';
 
             if (modifier.includes('right')) {
                 iconClass = 'ri-corner-up-right-line'; arah = 'Belok kanan';
             } else if (modifier.includes('left')) {
                 iconClass = 'ri-corner-up-left-line'; arah = 'Belok kiri';
             } else if (type === 'arrive') {
-                iconClass = 'ri-map-pin-2-fill'; arah = 'Sampai di tujuan';
+                iconClass = 'ri-map-pin-2-fill'; arah = 'Kamu sampai di tujuan!';
             }
 
             const namaJalan = step.name ? ` ke ${step.name}` : '';
@@ -181,21 +158,19 @@ async function drawRouteManual(start, end, mode) {
         });
 
     } catch (err) {
-        console.error("Gagal menarik rute:", err);
-        
-        let alasanError = "Gagal memuat rute jalan raya.";
+        let alasanError = "Ups, rute nggak ketemu nih.";
         if (mode === 'jalan') {
-            alasanError = "Jarak terlalu jauh untuk dihitung dengan mode pejalan kaki.";
+            alasanError = "Kejauhan kalau jalan kaki, mending ganti naik motor/mobil aja.";
         } else {
-            alasanError = "Server satelit sedang sibuk/offline.";
+            alasanError = "Server petanya lagi sibuk.";
         }
 
-        document.getElementById('panel-title').innerText = "Mode Peta Manual";
+        document.getElementById('panel-title').innerText = "Pakai Peta Biasa Dulu Ya";
         document.getElementById('panel-meta').innerText = alasanError;
         document.getElementById('instruction-list').innerHTML = `
             <div style="padding: 15px; text-align: center; color: #ef4444;">
                 <i class="ri-route-line" style="font-size: 2rem;"></i>
-                <p>Gagal menarik garis biru otomatis. Garis merah putus-putus menunjukkan arah lurus menuju lokasi tujuan Anda.</p>
+                <p>Garis jalannya gagal dimuat. Kamu bisa ikutin patokan garis merah putus-putus ini buat arah kasarnya ya.</p>
             </div>
         `;
         routeLine = L.polyline([start, end], {color: '#ef4444', weight: 4, dashArray: '10, 10'}).addTo(map);

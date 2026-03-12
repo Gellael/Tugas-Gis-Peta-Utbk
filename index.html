@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Navigasi UTBK UNIB</title>
+    <title>Peta UTBK UNIB</title>
 
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -84,6 +84,15 @@
             color: var(--primary-dark); text-transform: uppercase; 
             letter-spacing: 0.5px; margin-bottom: 10px; margin-left: 6px;
         }
+
+        .static-input {
+            width: 100%; padding: 18px 20px; border-radius: 20px; 
+            background-color: #f1f5f9; 
+            font-family: inherit; font-size: 0.95rem; font-weight: 700; color: var(--primary-dark);
+            box-shadow: inset 0 0 0 1px rgba(226, 232, 240, 1);
+            display: flex; align-items: center; gap: 8px;
+            cursor: not-allowed;
+        }
         
         select {
             width: 100%; padding: 16px 20px; border-radius: 20px; 
@@ -101,7 +110,6 @@
             box-shadow: 0 8px 16px rgba(37, 99, 235, 0.08), inset 0 0 0 2px var(--primary-light);
         }
         
-        optgroup { font-weight: 800; color: var(--primary); background: white; }
         option { font-weight: 500; color: var(--text-main); }
 
         .btn-start {
@@ -116,7 +124,6 @@
         .btn-start:hover { box-shadow: 0 15px 35px -5px rgba(37, 99, 235, 0.6); transform: translateY(-4px) scale(1.02); }
         .btn-start:active { transform: translateY(2px) scale(0.98); box-shadow: 0 5px 15px -5px rgba(37, 99, 235, 0.4); }
 
-        /* --- MAP OVERLAY UI --- */
         #map { position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: 1; visibility: hidden; }
         #map.active { visibility: visible; }
 
@@ -136,7 +143,6 @@
         }
         .btn-back:active { transform: scale(0.9); }
 
-        /* --- BOTTOM SHEET PANEL --- */
         .route-panel {
             position: absolute; bottom: 0; left: 0; right: 0; z-index: 1000;
             background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
@@ -188,55 +194,42 @@
 
     <div id="landing-page">
         <div class="hero-card">
-            <div class="hero-icon"><i class="ri-radar-fill"></i></div>
-            <h1>Navigasi UNIB</h1>
-            <p>Sistem pencari rute pintar untuk UTBK</p>
+            <div class="hero-icon"><i class="ri-map-pin-line"></i></div>
+            <h1>Peta UTBK UNIB</h1>
+            <p>Cek rute tercepat ke gedung ujianmu</p>
 
             <div class="input-group">
-                <label><i class="ri-focus-3-line" style="font-size: 1.2rem;"></i> Titik Awal Anda</label>
-                <select id="start">
-                    <option value="user">📍 Lokasi Saya Saat Ini (GPS)</option>
-                    <option value="gerbang">🏫 Gerbang Depan UNIB</option>
-                    <option value="pantai">🏖️ Pantai Panjang (Simulasi)</option>
-                </select>
+                <label>Mulai dari</label>
+                <div class="static-input">
+                    📍 Posisi kamu sekarang (GPS)
+                </div>
             </div>
 
             <div class="input-group">
-                <label><i class="ri-building-4-line" style="font-size: 1.2rem;"></i> Gedung Tujuan</label>
+                <label>Mau ke gedung mana?</label>
                 <select id="dest">
-                    <optgroup label="Pusat & Fasilitas Utama">
-                        <option value="lptik">LPTIK (Lab Komputer Utama)</option>
-                        <option value="rektorat">Gedung Rektorat</option>
-                        <option value="auditorium">Auditorium UNIB</option>
-                        <option value="perpus">Perpustakaan Pusat</option>
-                        <option value="gkb">Gedung Kuliah Bersama (GKB)</option>
-                    </optgroup>
-                    <optgroup label="Fakultas (Grup A)">
-                        <option value="fkip">FKIP (Ilmu Pendidikan)</option>
-                        <option value="ft">Fakultas Teknik</option>
-                        <option value="mipa">Fakultas MIPA</option>
-                        <option value="fk">Fakultas Kedokteran</option>
-                    </optgroup>
-                    <optgroup label="Fakultas (Grup B)">
-                        <option value="feb">Fakultas Ekonomi & Bisnis</option>
-                        <option value="fh">Fakultas Hukum</option>
-                        <option value="fisip">Fakultas Ilmu Sosial & Politik</option>
-                        <option value="fp">Fakultas Pertanian</option>
-                    </optgroup>
+                    <option value="lptik">Gedung LPTIK</option>
+                    <option value="fkik">Gedung FKIK</option>
+                    <option value="feb_s">Gedung S FEB</option>
+                    <option value="fisipol">Gedung FISIPOL</option>
+                    <option value="lab_bahasa">Gedung Lab Bahasa FKIP</option>
+                    <option value="lab_si">Gedung Lab SI Fak. Teknik</option>
+                    <option value="perpus">Gedung Perpustakaan</option>
+                    <option value="lab_hukum">Gedung Lab Komputer FH</option>
                 </select>
             </div>
 
             <div class="input-group">
-                <label><i class="ri-steering-2-line" style="font-size: 1.2rem;"></i> Mode Perjalanan</label>
+                <label>Naik apa kesana?</label>
                 <select id="mode">
-                    <option value="motor">🏍️ Sepeda Motor</option>
-                    <option value="mobil">🚗 Mobil</option>
-                    <option value="jalan">🚶 Pejalan Kaki</option>
+                    <option value="motor">Sepeda Motor</option>
+                    <option value="mobil">Mobil</option>
+                    <option value="jalan">Jalan Kaki</option>
                 </select>
             </div>
 
             <button class="btn-start" id="btn-start">
-                Tampilkan Rute Tercepat <i class="ri-arrow-right-line" style="font-size: 1.2rem;"></i>
+                Cari Jalan Sekarang <i class="ri-search-line" style="font-size: 1.2rem;"></i>
             </button>
         </div>
     </div>
@@ -249,8 +242,8 @@
     <div class="route-panel" id="route-panel">
         <div class="route-header" id="panel-toggle">
             <div>
-                <h3 id="panel-title">Mencari Rute...</h3>
-                <p id="panel-meta">Mohon tunggu sebentar</p>
+                <h3 id="panel-title">Sebentar ya...</h3>
+                <p id="panel-meta">Lagi cari jalan yang pas</p>
             </div>
             <div style="background: #eff6ff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
                 <i class="ri-arrow-down-s-line" id="toggle-icon" style="font-size: 1.5rem; color: var(--primary); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);"></i>
