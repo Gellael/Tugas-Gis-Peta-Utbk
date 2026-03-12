@@ -6,118 +6,180 @@
     <title>Navigasi UTBK UNIB</title>
 
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e40af;
+            --bg-body: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
             --text-main: #0f172a;
-            --text-sub: #64748b;
-            --glass: rgba(255, 255, 255, 0.95);
+            --text-sub: #475569;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --shadow-float: 0 20px 40px -10px rgba(37, 99, 235, 0.15);
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body, html { 
             margin: 0; padding: 0; 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             height: 100vh; width: 100vw; overflow: hidden;
-            background: #f8fafc;
+            background: var(--bg-body);
+            color: var(--text-main);
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         #landing-page {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+            background: linear-gradient(-45deg, #eff6ff, #dbeafe, #bfdbfe, #e0f2fe);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
             z-index: 2000; display: flex; align-items: center; justify-content: center;
-            padding: 20px; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px; transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
         }
 
         .hero-card {
-            background: white; padding: 40px; border-radius: 32px;
+            background: var(--card-bg); 
+            padding: 40px 32px; 
+            border-radius: 36px;
             width: 100%; max-width: 420px; text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-            max-height: 90vh; overflow-y: auto;
+            box-shadow: var(--shadow-float), inset 0 0 0 1px rgba(255,255,255,0.6);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            max-height: 95vh; overflow-y: auto;
+            scrollbar-width: none; 
+        }
+        .hero-card::-webkit-scrollbar { display: none; }
+
+        @keyframes pulseRing {
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.3); transform: scale(0.95); }
+            70% { box-shadow: 0 0 0 25px rgba(37, 99, 235, 0); transform: scale(1); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); transform: scale(0.95); }
         }
 
         .hero-icon {
-            width: 70px; height: 70px; background: #e0f2fe; color: var(--primary);
-            border-radius: 20px; display: flex; align-items: center; justify-content: center;
-            font-size: 32px; margin: 0 auto 20px;
+            width: 80px; height: 80px; 
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); 
+            color: white; border-radius: 28px; 
+            display: flex; align-items: center; justify-content: center;
+            font-size: 40px; margin: 0 auto 24px;
+            animation: pulseRing 2.5s infinite;
         }
 
-        .hero-card h1 { margin: 0; font-size: 1.4rem; font-weight: 800; color: var(--text-main); }
-        .hero-card p { margin: 8px 0 25px; color: var(--text-sub); font-size: 0.9rem; }
+        .hero-card h1 { margin: 0; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; color: #1e293b; }
+        .hero-card p { margin: 8px 0 24px; color: var(--text-sub); font-size: 0.95rem; font-weight: 500; }
 
-        label { display: block; font-size: 0.7rem; font-weight: 700; color: var(--primary); text-transform: uppercase; text-align: left; margin-bottom: 8px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        
+        label { 
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.8rem; font-weight: 700; 
+            color: var(--primary-dark); text-transform: uppercase; 
+            letter-spacing: 0.5px; margin-bottom: 10px; margin-left: 6px;
+        }
         
         select {
-            width: 100%; padding: 14px; border-radius: 12px; border: 2px solid #f1f5f9;
-            background: #f8fafc; font-family: inherit; font-size: 0.95rem; font-weight: 600;
-            margin-bottom: 20px; outline: none; cursor: pointer;
+            width: 100%; padding: 16px 20px; border-radius: 20px; 
+            border: none; background-color: white; 
+            font-family: inherit; font-size: 0.95rem; font-weight: 600; color: var(--text-main);
+            outline: none; cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03), inset 0 0 0 1px rgba(226, 232, 240, 1);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24' fill='%233b82f6'%3E%3Cpath d='M12 15.6315L20.9679 10.8838L20.0321 9.11619L12 13.3685L3.96788 9.11619L3.0321 10.8838L12 15.6315Z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 20px center;
+            padding-right: 50px;
         }
-        optgroup { font-weight: 800; color: var(--primary); }
+        select:focus, select:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.08), inset 0 0 0 2px var(--primary-light);
+        }
+        
+        optgroup { font-weight: 800; color: var(--primary); background: white; }
         option { font-weight: 500; color: var(--text-main); }
 
         .btn-start {
-            width: 100%; padding: 16px; background: var(--primary); color: white;
-            border: none; border-radius: 14px; font-family: inherit; font-size: 1rem;
-            font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-            margin-top: 10px;
+            width: 100%; padding: 20px; 
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); 
+            color: white; border: none; border-radius: 22px; 
+            font-family: inherit; font-size: 1.05rem; font-weight: 800; 
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+            margin-top: 28px; box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        .btn-start:hover { box-shadow: 0 15px 35px -5px rgba(37, 99, 235, 0.6); transform: translateY(-4px) scale(1.02); }
+        .btn-start:active { transform: translateY(2px) scale(0.98); box-shadow: 0 5px 15px -5px rgba(37, 99, 235, 0.4); }
 
+        /* --- MAP OVERLAY UI --- */
         #map { position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: 1; visibility: hidden; }
         #map.active { visibility: visible; }
 
         .map-overlay {
-            position: absolute; top: 20px; left: 20px; z-index: 1000;
-            background: var(--glass); backdrop-filter: blur(10px);
-            padding: 10px 18px; border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: none; align-items: center; gap: 12px;
+            position: absolute; top: 24px; left: 24px; z-index: 1000;
+            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 8px 24px 8px 8px; border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(255,255,255,0.6); 
+            display: none; align-items: center; gap: 16px;
         }
 
         .btn-back {
-            background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%;
+            background: white; border: none; width: 40px; height: 40px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: all 0.2s; color: var(--primary);
+            font-size: 1.2rem;
         }
+        .btn-back:active { transform: scale(0.9); }
 
-        /* BOTTOM SHEET PANEL */
+        /* --- BOTTOM SHEET PANEL --- */
         .route-panel {
             position: absolute; bottom: 0; left: 0; right: 0; z-index: 1000;
-            background: var(--glass); backdrop-filter: blur(15px);
-            border-top: 1px solid rgba(255,255,255,0.5);
-            box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
-            border-radius: 24px 24px 0 0;
-            display: none; flex-direction: column;
-            max-height: 55vh; transition: transform 0.3s ease;
+            background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-top: 1px solid rgba(255,255,255,1); box-shadow: 0 -20px 40px rgba(0,0,0,0.1);
+            border-radius: 36px 36px 0 0; display: none; flex-direction: column;
+            max-height: 65vh; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .route-panel.collapsed .route-instructions { display: none; }
+        
+        .route-panel::before {
+            content: ''; width: 48px; height: 6px; background: rgba(148, 163, 184, 0.4); 
+            border-radius: 10px; margin: 16px auto 0; display: block;
+        }
+
+        .route-panel.collapsed { transform: translateY(calc(100% - 95px)); }
+        .route-panel.collapsed .route-instructions { opacity: 0; pointer-events: none; }
         .route-panel.collapsed #toggle-icon { transform: rotate(180deg); }
 
-        .route-header {
-            padding: 20px 24px; display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        .route-header h3 { margin: 0; font-size: 1.1rem; color: var(--text-main); font-weight: 800; }
-        .route-header p { margin: 4px 0 0 0; font-size: 0.85rem; color: var(--primary); font-weight: 700; }
+        .route-header { padding: 16px 32px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .route-header h3 { margin: 0; font-size: 1.2rem; color: #0f172a; font-weight: 800; letter-spacing: -0.5px;}
+        .route-header p { margin: 6px 0 0 0; font-size: 0.9rem; color: var(--primary-light); font-weight: 700; }
         
-        .route-instructions { padding: 0 24px 20px; overflow-y: auto; flex: 1; }
+        .route-instructions { padding: 0 32px 24px; overflow-y: auto; flex: 1; transition: opacity 0.3s ease; }
         .step {
-            display: flex; align-items: center; gap: 16px; padding: 14px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05); color: var(--text-main);
+            display: flex; align-items: flex-start; gap: 18px; padding: 18px 0;
+            border-bottom: 1px dashed rgba(0,0,0,0.08); color: var(--text-main);
         }
         .step:last-child { border-bottom: none; }
         .step-icon {
-            width: 36px; height: 36px; background: #e0f2fe; color: var(--primary);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-            font-size: 1.2rem; flex-shrink: 0;
+            width: 44px; height: 44px; background: #eff6ff; color: var(--primary);
+            border-radius: 16px; display: flex; align-items: center; justify-content: center; 
+            font-size: 1.4rem; flex-shrink: 0; 
         }
-        .step-text { font-size: 0.9rem; font-weight: 600; line-height: 1.4; }
-        .step-dist { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-sub); margin-top: 2px; }
+        .step-text { font-size: 0.95rem; font-weight: 700; line-height: 1.4; padding-top: 2px;}
+        .step-dist { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-sub); margin-top: 6px; }
 
         @media (min-width: 768px) {
             .route-panel {
-                bottom: 20px; left: 20px; right: auto; width: 380px;
-                border-radius: 24px; border: 1px solid rgba(255,255,255,0.5); max-height: 70vh;
+                bottom: 24px; left: 24px; right: auto; width: 420px;
+                border-radius: 32px; border: 1px solid rgba(255,255,255,0.8); max-height: 75vh;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.15);
             }
+            .route-panel::before { display: none; }
+            .route-panel.collapsed { transform: translateY(calc(100% - 85px + 24px)); }
         }
         .leaflet-routing-container { display: none !important; }
     </style>
@@ -126,49 +188,62 @@
 
     <div id="landing-page">
         <div class="hero-card">
-            <div class="hero-icon"><i class="ri-map-pin-user-fill"></i></div>
+            <div class="hero-icon"><i class="ri-radar-fill"></i></div>
             <h1>Navigasi UNIB</h1>
-            <p>Pilih Rute UTBK Anda</p>
+            <p>Sistem pencari rute pintar untuk UTBK</p>
 
-            <label>Titik Awal Anda</label>
-            <select id="start">
-                <option value="user">📍 Lokasi Saya Saat Ini (GPS)</option>
-                <option value="gerbang">Gerbang Depan UNIB (Simulasi)</option>
-                <option value="pantai">Pantai Panjang (Simulasi Jauh)</option>
-            </select>
+            <div class="input-group">
+                <label><i class="ri-focus-3-line" style="font-size: 1.2rem;"></i> Titik Awal Anda</label>
+                <select id="start">
+                    <option value="user">📍 Lokasi Saya Saat Ini (GPS)</option>
+                    <option value="gerbang">🏫 Gerbang Depan UNIB</option>
+                    <option value="pantai">🏖️ Pantai Panjang (Simulasi)</option>
+                </select>
+            </div>
 
-            <label>Gedung Tujuan</label>
-            <select id="dest">
-                <optgroup label="Pusat & Fasilitas Utama">
-                    <option value="lptik">LPTIK (Lab Komputer Utama)</option>
-                    <option value="rektorat">Gedung Rektorat</option>
-                    <option value="auditorium">Auditorium UNIB</option>
-                    <option value="perpus">Perpustakaan Pusat</option>
-                    <option value="gkb">Gedung Kuliah Bersama (GKB)</option>
-                </optgroup>
-                <optgroup label="Fakultas (Grup A)">
-                    <option value="fkip">FKIP (Ilmu Pendidikan)</option>
-                    <option value="ft">Fakultas Teknik</option>
-                    <option value="mipa">Fakultas MIPA</option>
-                    <option value="fk">Fakultas Kedokteran</option>
-                </optgroup>
-                <optgroup label="Fakultas (Grup B)">
-                    <option value="feb">Fakultas Ekonomi & Bisnis</option>
-                    <option value="fh">Fakultas Hukum</option>
-                    <option value="fisip">Fakultas Ilmu Sosial & Politik</option>
-                    <option value="fp">Fakultas Pertanian</option>
-                </optgroup>
-            </select>
+            <div class="input-group">
+                <label><i class="ri-building-4-line" style="font-size: 1.2rem;"></i> Gedung Tujuan</label>
+                <select id="dest">
+                    <optgroup label="Pusat & Fasilitas Utama">
+                        <option value="lptik">LPTIK (Lab Komputer Utama)</option>
+                        <option value="rektorat">Gedung Rektorat</option>
+                        <option value="auditorium">Auditorium UNIB</option>
+                        <option value="perpus">Perpustakaan Pusat</option>
+                        <option value="gkb">Gedung Kuliah Bersama (GKB)</option>
+                    </optgroup>
+                    <optgroup label="Fakultas (Grup A)">
+                        <option value="fkip">FKIP (Ilmu Pendidikan)</option>
+                        <option value="ft">Fakultas Teknik</option>
+                        <option value="mipa">Fakultas MIPA</option>
+                        <option value="fk">Fakultas Kedokteran</option>
+                    </optgroup>
+                    <optgroup label="Fakultas (Grup B)">
+                        <option value="feb">Fakultas Ekonomi & Bisnis</option>
+                        <option value="fh">Fakultas Hukum</option>
+                        <option value="fisip">Fakultas Ilmu Sosial & Politik</option>
+                        <option value="fp">Fakultas Pertanian</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label><i class="ri-steering-2-line" style="font-size: 1.2rem;"></i> Mode Perjalanan</label>
+                <select id="mode">
+                    <option value="motor">🏍️ Sepeda Motor</option>
+                    <option value="mobil">🚗 Mobil</option>
+                    <option value="jalan">🚶 Pejalan Kaki</option>
+                </select>
+            </div>
 
             <button class="btn-start" id="btn-start">
-                Buka Peta Navigasi <i class="ri-direction-fill"></i>
+                Tampilkan Rute Tercepat <i class="ri-arrow-right-line" style="font-size: 1.2rem;"></i>
             </button>
         </div>
     </div>
 
     <div class="map-overlay" id="ui">
         <button class="btn-back" id="btn-back"><i class="ri-arrow-left-line"></i></button>
-        <span id="label" style="font-weight: 700; font-size: 0.85rem;"></span>
+        <span id="label" style="font-weight: 800; font-size: 0.95rem; color: #0f172a;"></span>
     </div>
 
     <div class="route-panel" id="route-panel">
@@ -177,7 +252,9 @@
                 <h3 id="panel-title">Mencari Rute...</h3>
                 <p id="panel-meta">Mohon tunggu sebentar</p>
             </div>
-            <i class="ri-arrow-down-s-line" id="toggle-icon" style="font-size: 1.5rem; color: #64748b;"></i>
+            <div style="background: #eff6ff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                <i class="ri-arrow-down-s-line" id="toggle-icon" style="font-size: 1.5rem; color: var(--primary); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);"></i>
+            </div>
         </div>
         <div class="route-instructions" id="instruction-list"></div>
     </div>
